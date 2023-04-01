@@ -6,7 +6,7 @@
  *
  */
 
-'use client';
+"use client";
 
 // ---------------------------------------------------------
 // Note: this code would usually be provided by a framework.
@@ -18,8 +18,11 @@ import {
   useContext,
   useState,
   use,
-} from 'react';
-import {createFromFetch, createFromReadableStream} from 'react-server-dom-webpack/client';
+} from "react";
+import {
+  createFromFetch,
+  createFromReadableStream,
+} from "react-server-dom-webpack/client";
 
 const RouterContext = createContext();
 const initialCache = new Map();
@@ -29,14 +32,14 @@ export function Router() {
   const [location, setLocation] = useState({
     selectedId: null,
     isEditing: false,
-    searchText: '',
+    searchText: "",
   });
 
   const locationKey = JSON.stringify(location);
   let content = cache.get(locationKey);
   if (!content) {
     content = createFromFetch(
-      fetch('/react?location=' + encodeURIComponent(locationKey))
+      fetch("/react?location=" + encodeURIComponent(locationKey))
     );
     cache.set(locationKey, content);
   }
@@ -45,27 +48,27 @@ export function Router() {
     startTransition(() => {
       const nextCache = new Map();
       if (response != null) {
-        const locationKey = response.headers.get('X-Location');
+        const locationKey = response.headers.get("X-Location");
         const nextLocation = JSON.parse(locationKey);
         const nextContent = createFromReadableStream(response.body);
         nextCache.set(locationKey, nextContent);
         navigate(nextLocation);
       }
       setCache(nextCache);
-    })
+    });
   }
 
   function navigate(nextLocation) {
     startTransition(() => {
-      setLocation(loc => ({
+      setLocation((loc) => ({
         ...loc,
-        ...nextLocation
+        ...nextLocation,
       }));
     });
   }
 
   return (
-    <RouterContext.Provider value={{location, navigate, refresh}}>
+    <RouterContext.Provider value={{ location, navigate, refresh }}>
       {use(content)}
     </RouterContext.Provider>
   );
@@ -75,8 +78,8 @@ export function useRouter() {
   return useContext(RouterContext);
 }
 
-export function useMutation({endpoint, method}) {
-  const {refresh} = useRouter();
+export function useMutation({ endpoint, method }) {
+  const { refresh } = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [didError, setDidError] = useState(false);
   const [error, setError] = useState(null);
@@ -96,7 +99,7 @@ export function useMutation({endpoint, method}) {
           method,
           body: JSON.stringify(payload),
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );

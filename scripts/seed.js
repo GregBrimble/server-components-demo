@@ -6,16 +6,16 @@
  *
  */
 
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
-const {Pool} = require('pg');
-const {readdir, unlink, writeFile} = require('fs/promises');
-const startOfYear = require('date-fns/startOfYear');
-const credentials = require('../credentials');
+const fs = require("fs");
+const path = require("path");
+const { Pool } = require("pg");
+const { readdir, unlink, writeFile } = require("fs/promises");
+const startOfYear = require("date-fns/startOfYear");
+const credentials = require("../credentials");
 
-const NOTES_PATH = './notes';
+const NOTES_PATH = "./notes";
 const pool = new Pool(credentials);
 
 const now = new Date();
@@ -27,7 +27,7 @@ function randomDateBetween(start, end) {
   );
 }
 
-const dropTableStatement = 'DROP TABLE IF EXISTS notes;';
+const dropTableStatement = "DROP TABLE IF EXISTS notes;";
 const createTableStatement = `CREATE TABLE notes (
   id SERIAL PRIMARY KEY,
   created_at TIMESTAMP NOT NULL,
@@ -40,25 +40,25 @@ const insertNoteStatement = `INSERT INTO notes(title, body, created_at, updated_
   RETURNING *`;
 const seedData = [
   [
-    'Meeting Notes',
-    'This is an example note. It contains **Markdown**!',
+    "Meeting Notes",
+    "This is an example note. It contains **Markdown**!",
     randomDateBetween(startOfThisYear, now),
   ],
   [
-    'Make a thing',
+    "Make a thing",
     `It's very easy to make some words **bold** and other words *italic* with
 Markdown. You can even [link to React's website!](https://www.reactjs.org).`,
     randomDateBetween(startOfThisYear, now),
   ],
   [
-    'A note with a very long title because sometimes you need more words',
+    "A note with a very long title because sometimes you need more words",
     `You can write all kinds of [amazing](https://en.wikipedia.org/wiki/The_Amazing)
 notes in this app! These note live on the server in the \`notes\` folder.
 
 ![This app is powered by React](https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/React_Native_Logo.png/800px-React_Native_Logo.png)`,
     randomDateBetween(startOfThisYear, now),
   ],
-  ['I wrote this note today', 'It was an excellent note.', now],
+  ["I wrote this note today", "It was an excellent note.", now],
 ];
 
 async function seed() {
@@ -71,12 +71,12 @@ async function seed() {
   const oldNotes = await readdir(path.resolve(NOTES_PATH));
   await Promise.all(
     oldNotes
-      .filter((filename) => filename.endsWith('.md'))
+      .filter((filename) => filename.endsWith(".md"))
       .map((filename) => unlink(path.resolve(NOTES_PATH, filename)))
   );
 
   await Promise.all(
-    res.map(({rows}) => {
+    res.map(({ rows }) => {
       const id = rows[0].id;
       const content = rows[0].body;
       const data = new Uint8Array(Buffer.from(content));

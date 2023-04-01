@@ -10,12 +10,12 @@
 // Note: this code would usually be provided by a framework.
 // ---------------------------------------------------------
 
-import {useState, Suspense, use} from 'react';
-import {createRoot} from 'react-dom/client';
-import {ErrorBoundary} from 'react-error-boundary';
-import {Router} from './router'
+import { useState, Suspense, use } from "react";
+import { createRoot } from "react-dom/client";
+import { ErrorBoundary } from "react-error-boundary";
+import { Router } from "./router";
 
-const root = createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById("root"));
 root.render(<Root />);
 
 function Root() {
@@ -26,11 +26,11 @@ function Root() {
   );
 }
 
-function Error({error}) {
+function Error({ error }) {
   return (
     <div>
       <h1>Application Error</h1>
-      <pre style={{whiteSpace: 'pre-wrap'}}>{error.stack}</pre>
+      <pre style={{ whiteSpace: "pre-wrap" }}>{error.stack}</pre>
     </div>
   );
 }

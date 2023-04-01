@@ -7,10 +7,10 @@
  */
 
 // Error early if this is accidentally imported on the client.
-import 'server-only';
+import "server-only";
 
-import {Pool} from 'pg';
-import credentials from '../credentials';
+import { Pool } from "pg";
+import credentials from "../credentials";
 
 // Don't keep credentials in the source tree in a real app!
 export const db = new Pool(credentials);
